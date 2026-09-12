@@ -1,0 +1,213 @@
+{
+  "info": {
+    "name": "Autoescola API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8080" },
+    { "key": "token", "value": "" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.token) { pm.collectionVariables.set('token', json.token); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@autoescola.com\",\n  \"senha\": \"Admin@123\"\n}"
+            },
+            "url": "{{base_url}}/auth/login"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Instrutores",
+      "item": [
+        {
+          "name": "Cadastrar instrutor",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Carlos Silva\",\n  \"email\": \"carlos@autoescola.com\",\n  \"telefone\": \"(11) 91234-5678\",\n  \"cnh\": \"12345678901\",\n  \"especialidade\": \"CARROS\",\n  \"endereco\": {\n    \"logradouro\": \"Rua A\",\n    \"numero\": \"100\",\n    \"bairro\": \"Centro\",\n    \"cidade\": \"Sao Paulo\",\n    \"uf\": \"SP\",\n    \"cep\": \"01000-000\"\n  }\n}"
+            },
+            "url": "{{base_url}}/instrutores"
+          }
+        },
+        {
+          "name": "Listar instrutores",
+          "request": { "method": "GET", "url": "{{base_url}}/instrutores?page=0" }
+        },
+        {
+          "name": "Buscar instrutor por id",
+          "request": { "method": "GET", "url": "{{base_url}}/instrutores/1" }
+        },
+        {
+          "name": "Atualizar instrutor",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Carlos Silva Junior\",\n  \"telefone\": \"(11) 99999-0000\",\n  \"endereco\": {\n    \"logradouro\": \"Rua A\",\n    \"numero\": \"100\",\n    \"bairro\": \"Centro\",\n    \"cidade\": \"Sao Paulo\",\n    \"uf\": \"SP\",\n    \"cep\": \"01000-000\"\n  }\n}"
+            },
+            "url": "{{base_url}}/instrutores/1"
+          }
+        },
+        {
+          "name": "Excluir (inativar) instrutor",
+          "request": { "method": "DELETE", "url": "{{base_url}}/instrutores/1" }
+        }
+      ]
+    },
+    {
+      "name": "Alunos",
+      "item": [
+        {
+          "name": "Cadastrar aluno",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Joao Souza\",\n  \"email\": \"joao@teste.com\",\n  \"telefone\": \"(11) 98888-7777\",\n  \"cpf\": \"98765432100\",\n  \"endereco\": {\n    \"logradouro\": \"Rua B\",\n    \"bairro\": \"Vila\",\n    \"cidade\": \"Sao Paulo\",\n    \"uf\": \"SP\",\n    \"cep\": \"02000-000\"\n  }\n}"
+            },
+            "url": "{{base_url}}/alunos"
+          }
+        },
+        {
+          "name": "Listar alunos",
+          "request": { "method": "GET", "url": "{{base_url}}/alunos?page=0" }
+        },
+        {
+          "name": "Buscar aluno por id",
+          "request": { "method": "GET", "url": "{{base_url}}/alunos/1" }
+        },
+        {
+          "name": "Atualizar aluno",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Joao Souza Neto\",\n  \"telefone\": \"(11) 90000-1111\",\n  \"endereco\": {\n    \"logradouro\": \"Rua B\",\n    \"bairro\": \"Vila\",\n    \"cidade\": \"Sao Paulo\",\n    \"uf\": \"SP\",\n    \"cep\": \"02000-000\"\n  }\n}"
+            },
+            "url": "{{base_url}}/alunos/1"
+          }
+        },
+        {
+          "name": "Excluir (inativar) aluno",
+          "request": { "method": "DELETE", "url": "{{base_url}}/alunos/1" }
+        }
+      ]
+    },
+    {
+      "name": "Instrucoes",
+      "item": [
+        {
+          "name": "Agendar instrucao",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"alunoId\": 1,\n  \"instrutorId\": 1,\n  \"dataHora\": \"2026-09-21T10:00:00\"\n}"
+            },
+            "url": "{{base_url}}/instrucoes"
+          }
+        },
+        {
+          "name": "Listar instrucoes",
+          "request": { "method": "GET", "url": "{{base_url}}/instrucoes?page=0" }
+        },
+        {
+          "name": "Buscar instrucao por id",
+          "request": { "method": "GET", "url": "{{base_url}}/instrucoes/1" }
+        },
+        {
+          "name": "Cancelar instrucao",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"ALUNO_DESISTIU\"\n}"
+            },
+            "url": "{{base_url}}/instrucoes/1/cancelar"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Usuarios (admin)",
+      "item": [
+        {
+          "name": "Cadastrar usuario",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Recepcionista\",\n  \"email\": \"recepcao@autoescola.com\",\n  \"senha\": \"Senha@123\",\n  \"perfil\": \"USUARIO\"\n}"
+            },
+            "url": "{{base_url}}/usuarios"
+          }
+        },
+        {
+          "name": "Listar usuarios",
+          "request": { "method": "GET", "url": "{{base_url}}/usuarios?page=0" }
+        },
+        {
+          "name": "Atualizar usuario",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Recepcionista Chefe\",\n  \"perfil\": \"USUARIO\"\n}"
+            },
+            "url": "{{base_url}}/usuarios/2"
+          }
+        },
+        {
+          "name": "Excluir usuario",
+          "request": { "method": "DELETE", "url": "{{base_url}}/usuarios/2" }
+        },
+        {
+          "name": "Alterar minha senha",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"senhaAtual\": \"Admin@123\",\n  \"novaSenha\": \"NovaSenha@456\"\n}"
+            },
+            "url": "{{base_url}}/usuarios/senha"
+          }
+        }
+      ]
+    }
+  ]
+}
